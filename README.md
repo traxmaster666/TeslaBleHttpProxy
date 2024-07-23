@@ -52,6 +52,34 @@ go build .
 
 Please remember to create an empty folder called `key` where the keys can be stored later.
 
+
+## Start TBHP as an automatic starting Service (/etc/systemd/system) (Example on a Raspi Pi 3B)
+
+go to /etc/systemd/system and create a new service entry:
+`sudo nano TBHP.service`
+
+Paste the following text into the file:
+```
+[Unit]
+Description=Tesla Ble Http Proxy
+
+[Service]
+Type=simple
+User=pi
+WorkingDirectory=/home/pi/TeslaBleHttpProxy
+ExecStart=/usr/local/go/bin/go run .
+Restart=failure
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
+```
+Save the file and reload Service Daemon:
+`sudo systemctl daemon-reload`
+
+Start Service:
+`sudo systemctl enable TBHP.service`
+
 ## Generate key for vehicle
 
 *(Here, the simple, automatic method is described. Besides the automatic method, you can also generate the keys [manually](docs/manually_gen_key.md).)*
